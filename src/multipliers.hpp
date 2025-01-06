@@ -12,15 +12,16 @@
 #include "../References/evoapproxlib-master/selected_multipliers/pareto_pwr_mae 8_8 unsigned/mul8u_Y48.c"  // mul8u_Y48 function
 
 void writeMAEToCSV(const std::array<double, 256>& probX, const std::array<double, 256>& probY) {
-{ std::ofstream outFile("results.csv", std::ios::app); outFile << "mul8u_13QR," << calculateWeightedMAE(probX, probY, mul8u_13QR) << "\n"; outFile.close(); }
-{ std::ofstream outFile("results.csv", std::ios::app); outFile << "mul8u_150Q," << calculateWeightedMAE(probX, probY, mul8u_150Q) << "\n"; outFile.close(); }
-{ std::ofstream outFile("results.csv", std::ios::app); outFile << "mul8u_185Q," << calculateWeightedMAE(probX, probY, mul8u_185Q) << "\n"; outFile.close(); }
-{ std::ofstream outFile("results.csv", std::ios::app); outFile << "mul8u_1JFF," << calculateWeightedMAE(probX, probY, mul8u_1JFF) << "\n"; outFile.close(); }
-{ std::ofstream outFile("results.csv", std::ios::app); outFile << "mul8u_2AC," << calculateWeightedMAE(probX, probY, mul8u_2AC) << "\n"; outFile.close(); }
-{ std::ofstream outFile("results.csv", std::ios::app); outFile << "mul8u_E9R," << calculateWeightedMAE(probX, probY, mul8u_E9R) << "\n"; outFile.close(); }
-{ std::ofstream outFile("results.csv", std::ios::app); outFile << "mul8u_FTA," << calculateWeightedMAE(probX, probY, mul8u_FTA) << "\n"; outFile.close(); }
-{ std::ofstream outFile("results.csv", std::ios::app); outFile << "mul8u_LM7," << calculateWeightedMAE(probX, probY, mul8u_LM7) << "\n"; outFile.close(); }
-{ std::ofstream outFile("results.csv", std::ios::app); outFile << "mul8u_Y48," << calculateWeightedMAE(probX, probY, mul8u_Y48) << "\n"; outFile.close(); }
+{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "Multiplier, WeightedMAE" << "\n"; outFile.close(); }
+ { std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "mul8u_13QR," << calculateWeightedMAE(probX, probY, mul8u_13QR) << "\n"; outFile.close(); }
+{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "mul8u_150Q," << calculateWeightedMAE(probX, probY, mul8u_150Q) << "\n"; outFile.close(); }
+{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "mul8u_185Q," << calculateWeightedMAE(probX, probY, mul8u_185Q) << "\n"; outFile.close(); }
+{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "mul8u_1JFF," << calculateWeightedMAE(probX, probY, mul8u_1JFF) << "\n"; outFile.close(); }
+{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "mul8u_2AC," << calculateWeightedMAE(probX, probY, mul8u_2AC) << "\n"; outFile.close(); }
+{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "mul8u_E9R," << calculateWeightedMAE(probX, probY, mul8u_E9R) << "\n"; outFile.close(); }
+{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "mul8u_FTA," << calculateWeightedMAE(probX, probY, mul8u_FTA) << "\n"; outFile.close(); }
+{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "mul8u_LM7," << calculateWeightedMAE(probX, probY, mul8u_LM7) << "\n"; outFile.close(); }
+{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "mul8u_Y48," << calculateWeightedMAE(probX, probY, mul8u_Y48) << "\n"; outFile.close(); }
 }
 
 void GenerateLUT() {

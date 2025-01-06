@@ -1,13 +1,15 @@
 import os
 
 folder_path = './References/evoapproxlib-master/selected_multipliers/pareto_pwr_mae 8_8 unsigned'
-output_cpp = './multipliers.hpp'
-info_path = '../info/LUT_info.txt'
+output_cpp = './src/multipliers.hpp'
+# 以vscode打开的路径为准
+info_path = './info/Added_References_LUT_info.txt'
 
 include_lines = []
 MAE_call_lines = []
 func_names = []  # 用于保存所有的func_name
 
+MAE_call_lines.append(f'{{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "Multiplier, WeightedMAE" << "\\n"; outFile.close(); }}\n ')
 # 遍历目标文件夹
 for filename in os.listdir(folder_path):
     if filename.endswith('.c'):
@@ -15,7 +17,7 @@ for filename in os.listdir(folder_path):
         real_path = '.' + folder_path + '/' + filename
         include_lines.append(f'#include "{real_path}"  // {func_name} function\n')
         # 修改call_lines来生成C++代码片段
-        MAE_call_lines.append(f'{{ std::ofstream outFile("results.csv", std::ios::app); outFile << "{func_name}," << calculateWeightedMAE(probX, probY, {func_name}) << "\\n"; outFile.close(); }}\n')
+        MAE_call_lines.append(f'{{ std::ofstream outFile("../WeightedMAE/WeightedMAEResults.csv", std::ios::app); outFile << "{func_name}," << calculateWeightedMAE(probX, probY, {func_name}) << "\\n"; outFile.close(); }}\n')
         func_names.append(func_name)  # 保存func_name到列表
 
 LUT_call_lines = []
@@ -42,5 +44,5 @@ with open(info_path, 'w') as info_file:
     for func_name in func_names:
         info_file.write(f'{func_name}\n')
 
-print(f'C++ output has been written to {output_cpp}')
+print(f'C++ headfile has been written to {output_cpp}')
 print(f'Function names have been written to {info_path}')

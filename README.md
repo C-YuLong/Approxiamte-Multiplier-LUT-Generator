@@ -33,3 +33,9 @@
 `ReadFunction.hpp`：主要函数功能实现文件
 
 `ExtractFunction.py`：自动生成`multipliers.hpp`的文件，可以读取指定路径下的所有hpp文件并生成对应的`multipliers.hpp`
+
+
+
+python文件使用vscode打开文件为基准
+
+C++文件使用自己为基准
