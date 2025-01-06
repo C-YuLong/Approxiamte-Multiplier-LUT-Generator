@@ -1,0 +1,7 @@
+~
+.*.swp
+.*.swo
+.vscode
+
+__pycache__
+cython/*
