@@ -51,3 +51,10 @@ for multiplier in all_multipliers:
         print(f"{multiplier} is missing in: {', '.join(missing_folders)}")
 
 print(f"真值表LUT 权重MAE 硬件PDA完全匹配的乘法器: {common_all}")
+# 输出完全匹配的乘法器到 './info/fine.txt'
+output_file_path = './info/fine.txt'
+os.makedirs(os.path.dirname(output_file_path), exist_ok=True)  # 确保目录存在
+
+with open(output_file_path, 'w') as file:
+    for multiplier in common_all:
+        file.write(f"{multiplier}\n")
