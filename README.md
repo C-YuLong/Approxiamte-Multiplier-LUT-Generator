@@ -56,3 +56,4 @@ C++文件使用自己为基准
 4. 把额外自己原有的LUT文件和PDA文件放入`./MultilplierLUT`和`./PDA/pda.csv`中
 5. 把额外原有的权重MAE值放入`./WeightedMAE`中（注意：不能用空格和`\t`，列名必须是`Multiplier`和`WeightedMAE`）
 6. 在`./info/check_info.py`中检查哪些乘法器没有完整的配置。并同时生成记录完整数据的乘法器列表`fine.txt`
+7. 最后使用`./src/ProcessLUT.py`中生成标注好的TLED-LUT文件
