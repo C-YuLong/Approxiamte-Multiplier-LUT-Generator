@@ -97,7 +97,7 @@ void generateMultiplicationTable(FuncPtr approxMul, const string& name) {
     for (uint16_t i = 0; i <= 255; ++i) {
         for (uint16_t j = 0; j <= 255; ++j) {
             // 计算乘法结果
-            uint8_t result = approxMul(static_cast<uint8_t>(i), static_cast<uint8_t>(j));
+            uint16_t result = approxMul(static_cast<uint8_t>(i), static_cast<uint8_t>(j));
             outFile << static_cast<unsigned>(result);
             if (j < 255) {
                 outFile << " ";

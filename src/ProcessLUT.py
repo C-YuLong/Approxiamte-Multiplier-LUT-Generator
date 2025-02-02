@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 import re
+import math
+import matplotlib.pyplot as plt
 
 def clean_string(s):
     """去除字符串中的空格和制表符"""
@@ -66,7 +68,8 @@ def calculate_and_sort_multipliers(fine_txt_path, weighted_mae_folder_path, pda_
             continue
         
         # 计算乘积
-        product = weighted_mae * total_cell_area * data_arrival_time * slack_total_power
+        # product = weighted_mae * math.log(total_cell_area * data_arrival_time * slack_total_power)
+        product = math.log(weighted_mae * total_cell_area * data_arrival_time * slack_total_power)
         results.append((multiplier, product))
 
         # 读取 MultiplierLUT 中的对应 .txt 文件
@@ -99,6 +102,67 @@ def calculate_and_sort_multipliers(fine_txt_path, weighted_mae_folder_path, pda_
         for multiplier, reason in excluded_multipliers:
             print(f"{multiplier}: {reason}")
 
+def calculate_and_plot_mae_vs_pda_with_filter(fine_txt_path, weighted_mae_folder_path, pda_file_path):
+    """根据MAE和PDA的过滤条件计算每个乘法器的乘积，并绘制横轴为MAE，纵轴为ln(PDA)的散点图，并标注乘法器名称"""
+    multipliers = read_fine_txt(fine_txt_path)  # 读取乘法器列表
+    mae_values = []  # 存储 MAE 值
+    pda_ln_values = []  # 存储 PDA 自然对数的值
+    multiplier_names = []  # 存储乘法器名称
+    excluded_multipliers = []  # 用于记录排除的乘法器及原因
+
+    for multiplier in multipliers:
+        # 获取 WeightedMAE
+        weighted_mae = get_weighted_mae_for_multiplier_from_csv(weighted_mae_folder_path, multiplier)
+        if weighted_mae is None:
+            excluded_multipliers.append((multiplier, 'Missing in WeightedMAE data'))
+            continue
+
+        # 获取 PDA 中的对应值
+        total_cell_area, data_arrival_time, slack_total_power = get_pda_values_for_multiplier(pda_file_path, multiplier)
+        if total_cell_area is None or data_arrival_time is None or slack_total_power is None:
+            excluded_multipliers.append((multiplier, 'Missing in PDA data'))
+            continue
+        
+        # 过滤条件：如果不满足条件，则跳过
+        if weighted_mae > 50 or total_cell_area >= 100 or slack_total_power >= 100 or data_arrival_time >= 5:
+            excluded_multipliers.append((multiplier, 'Does not meet filter criteria'))
+            continue
+        
+        # 计算 PDA 的自然对数
+        pda_value = total_cell_area * data_arrival_time * slack_total_power
+        if pda_value > 0:  # 确保 PDA 值大于 0，才能计算其自然对数
+            pda_ln = math.log(pda_value)
+            # pda_ln = pda_value
+        else:
+            excluded_multipliers.append((multiplier, 'Invalid PDA value'))
+            continue
+
+        # 将符合条件的乘法器的 MAE 和 ln(PDA) 添加到列表中
+        mae_values.append(weighted_mae)
+        pda_ln_values.append(pda_ln)
+        multiplier_names.append(multiplier)  # 添加乘法器名称
+
+    # 绘制 MAE vs ln(PDA) 散点图
+    plt.figure(figsize=(10, 6))
+    plt.scatter(mae_values, pda_ln_values, color='b', label='Multipliers')
+
+    # 为每个点添加标注
+    for i, multiplier in enumerate(multiplier_names):
+        plt.annotate(multiplier, (mae_values[i], pda_ln_values[i]), textcoords="offset points", xytext=(0, 5), ha='center')
+
+    plt.title('Scatter plot of MAE vs ln(PDA)')
+    plt.xlabel('MAE (Weighted MAE)')
+    plt.ylabel('ln(PDA)')
+
+    # 显示排除的乘法器及原因
+    if excluded_multipliers:
+        print("\nExcluded Multipliers (and the reason):")
+        for multiplier, reason in excluded_multipliers:
+            print(f"{multiplier}: {reason}")
+
+    plt.grid(True)
+    plt.show()
+
 # 文件路径
 fine_txt_path = './info/fine.txt'
 weighted_mae_folder_path = './WeightedMAE'
@@ -108,3 +172,4 @@ teld_lut_path = './TLED-LUT'
 
 # 执行计算和排序
 calculate_and_sort_multipliers(fine_txt_path, weighted_mae_folder_path, pda_file_path, multiplier_lut_path, teld_lut_path)
+# calculate_and_plot_mae_vs_pda_with_filter(fine_txt_path, weighted_mae_folder_path, pda_file_path)
