@@ -14,7 +14,7 @@ void GenerateWeightedMAE(){
 }
 
 int main(){
-    // GenerateWeightedMAE();
+    GenerateWeightedMAE();
     GenerateLUT();
     return 0;
 }

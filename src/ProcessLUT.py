@@ -38,7 +38,7 @@ def get_pda_values_for_multiplier(file_path, multiplier):
     if not matching_row.empty:
         # 获取对应的多个值
         total_cell_area = matching_row['Total cell area(um^2)'].values[0]
-        data_arrival_time = matching_row['slack'].values[0]
+        data_arrival_time = matching_row['data arrival time(ps)'].values[0] / 1000.0  # 转换为 ns
         slack_total_power = matching_row['Total power'].values[0]
         return total_cell_area, data_arrival_time, slack_total_power
     return None, None, None
@@ -69,7 +69,7 @@ def calculate_and_sort_multipliers(fine_txt_path, weighted_mae_folder_path, pda_
         
         # 计算乘积
         # product = weighted_mae * math.log(total_cell_area * data_arrival_time * slack_total_power)
-        product = math.log(weighted_mae * total_cell_area * data_arrival_time * slack_total_power)
+        product = math.log(total_cell_area * data_arrival_time * slack_total_power)
         results.append((multiplier, product))
 
         # 读取 MultiplierLUT 中的对应 .txt 文件
